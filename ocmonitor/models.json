@@ -289,5 +289,70 @@
     "cacheRead": 0.0,
     "contextWindow": 128000,
     "sessionQuota": 0.0
+  },
+
+  "blackboxai/anthropic/claude-sonnet-4.6": {
+    "input": 3.0,
+    "output": 15.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 1000000,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/anthropic/claude-opus-4.6": {
+    "input": 5.0,
+    "output": 25.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 1000000,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/anthropic/claude-sonnet-4.5": {
+    "input": 3.0,
+    "output": 15.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 200000,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/anthropic/claude-opus-4.5": {
+    "input": 5.0,
+    "output": 25.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 200000,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/google/gemini-3.1-pro-preview": {
+    "input": 2.0,
+    "output": 12.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 1048576,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/openai/gpt-5.2-codex": {
+    "input": 1.75,
+    "output": 14.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 400000,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/openai/gpt-5.2-pro": {
+    "input": 1.75,
+    "output": 14.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 400000,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/openai/gpt-5.2": {
+    "input": 1.75,
+    "output": 14.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.0,
+    "contextWindow": 400000,
+    "sessionQuota": 0.0
   }
 }
