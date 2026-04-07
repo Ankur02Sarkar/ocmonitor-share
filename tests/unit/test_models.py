@@ -188,6 +188,94 @@ class TestCalculateCost:
         # 1M input tokens at $1.00/1M = $1.00
         assert interaction.calculate_cost(pricing_data) == Decimal("1.0")
 
+    def test_blackbox_model_cost_calculation(self, tmp_path):
+        """Test cost calculation for Black Box models with prefixed model IDs."""
+        blackbox_pricing = {
+            "blackboxai/anthropic/claude-sonnet-4.6": ModelPricing(
+                input=Decimal("3.0"),
+                output=Decimal("15.0"),
+                cacheWrite=Decimal("0"),
+                cacheRead=Decimal("0"),
+                contextWindow=1000000,
+                sessionQuota=Decimal("0"),
+            ),
+            "blackboxai/openai/gpt-5.2": ModelPricing(
+                input=Decimal("1.75"),
+                output=Decimal("14.0"),
+                cacheWrite=Decimal("0"),
+                cacheRead=Decimal("0"),
+                contextWindow=400000,
+                sessionQuota=Decimal("0"),
+            ),
+        }
+
+        interaction = self._make_interaction(
+            tmp_path,
+            model_id="blackboxai/anthropic/claude-sonnet-4.6",
+            input=1000000, output=500000,
+        )
+        # 1M input at $3.00/1M + 500K output at $15.00/1M = $3.00 + $7.50 = $10.50
+        cost = interaction.calculate_cost(blackbox_pricing)
+        assert cost == Decimal("10.5")
+
+        interaction2 = self._make_interaction(
+            tmp_path,
+            model_id="blackboxai/openai/gpt-5.2",
+            input=2000000, output=1000000,
+        )
+        # 2M input at $1.75/1M + 1M output at $14.00/1M = $3.50 + $14.00 = $17.50
+        cost2 = interaction2.calculate_cost(blackbox_pricing)
+        assert cost2 == Decimal("17.5")
+
+    def test_blackbox_model_not_in_pricing_returns_zero(self, tmp_path):
+        """Test that Black Box models without pricing return zero cost."""
+        pricing_data = {}  # Empty pricing - no models defined
+
+        interaction = self._make_interaction(
+            tmp_path,
+            model_id="blackboxai/anthropic/claude-sonnet-4.6",
+            input=1000000, output=500000,
+        )
+        cost = interaction.calculate_cost(pricing_data)
+        assert cost == Decimal("0")
+
+    def test_multiple_blackbox_models_aggregated_correctly(self, tmp_path):
+        """Test cost calculation works with multiple Black Box models in same session."""
+        blackbox_pricing = {
+            "blackboxai/anthropic/claude-sonnet-4.6": ModelPricing(
+                input=Decimal("3.0"),
+                output=Decimal("15.0"),
+                cacheWrite=Decimal("0"),
+                cacheRead=Decimal("0"),
+                contextWindow=1000000,
+                sessionQuota=Decimal("0"),
+            ),
+            "blackboxai/anthropic/claude-opus-4.6": ModelPricing(
+                input=Decimal("5.0"),
+                output=Decimal("25.0"),
+                cacheWrite=Decimal("0"),
+                cacheRead=Decimal("0"),
+                contextWindow=1000000,
+                sessionQuota=Decimal("0"),
+            ),
+        }
+
+        interaction1 = self._make_interaction(
+            tmp_path,
+            model_id="blackboxai/anthropic/claude-sonnet-4.6",
+            input=1000000, output=0,
+        )
+        cost1 = interaction1.calculate_cost(blackbox_pricing)
+        assert cost1 == Decimal("3.0")
+
+        interaction2 = self._make_interaction(
+            tmp_path,
+            model_id="blackboxai/anthropic/claude-opus-4.6",
+            input=0, output=1000000,
+        )
+        cost2 = interaction2.calculate_cost(blackbox_pricing)
+        assert cost2 == Decimal("25.0")
+
 
 class TestSessionData:
     """Tests for SessionData model."""

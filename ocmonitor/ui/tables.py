@@ -373,6 +373,15 @@ class TableFormatter:
             total_cost += session.calculate_total_cost(pricing_data)
             models_used.update(session.models_used)
 
+        # Calculate model-wise costs for summary breakdown
+        model_costs: Dict[str, Decimal] = {}
+        for session in sessions:
+            for file in session.files:
+                model = file.model_id
+                if model not in model_costs:
+                    model_costs[model] = Decimal('0')
+                model_costs[model] += file.calculate_cost(pricing_data)
+
         # Create summary text using semantic tags
         summary_lines = [
             f"[metric.important]Sessions:[/metric.important] [metric.value]{self.format_number(total_sessions)}[/metric.value]",
@@ -381,6 +390,15 @@ class TableFormatter:
             f"[metric.important]Total Cost:[/metric.important] [metric.cost]{self.format_currency(total_cost)}[/metric.cost]",
             f"[metric.important]Models Used:[/metric.important] [metric.value]{len(models_used)}[/metric.value]"
         ]
+
+        # Add model-wise cost breakdown if there are multiple models
+        if len(model_costs) > 1:
+            summary_lines.append("")  # Empty line separator
+            summary_lines.append("[metric.label]Cost by Model:[/metric.label]")
+            for model, cost in sorted(model_costs.items(), key=lambda x: -float(x[1])):
+                # Truncate long model names
+                model_display = model[:40] + "..." if len(model) > 40 else model
+                summary_lines.append(f"  [metric.dim]{model_display}[/metric.dim]: [metric.cost]{self.format_currency(cost)}[/metric.cost]")
 
         return Panel(
             "\n".join(summary_lines),
