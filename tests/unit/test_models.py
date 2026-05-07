@@ -162,7 +162,7 @@ class TestCalculateCost:
         interaction = self._make_interaction(
             tmp_path,
             raw_data={"cost": 0.0173},
-            model_id="openrouter/anthropic/claude-opus-4.6",
+            model_id="openrouter/anthropic/claude-opus-4.7",
             input=5000, output=2000,
         )
         assert interaction.calculate_cost(pricing_data) == Decimal("0.0173")
@@ -258,6 +258,14 @@ class TestCalculateCost:
                 contextWindow=1000000,
                 sessionQuota=Decimal("0"),
             ),
+            "blackboxai/anthropic/claude-opus-4.7": ModelPricing(
+                input=Decimal("5.0"),
+                output=Decimal("25.0"),
+                cacheWrite=Decimal("0"),
+                cacheRead=Decimal("0"),
+                contextWindow=1000000,
+                sessionQuota=Decimal("0"),
+            ),
         }
 
         interaction1 = self._make_interaction(
@@ -270,7 +278,7 @@ class TestCalculateCost:
 
         interaction2 = self._make_interaction(
             tmp_path,
-            model_id="blackboxai/anthropic/claude-opus-4.6",
+            model_id="blackboxai/anthropic/claude-opus-4.7",
             input=0, output=1000000,
         )
         cost2 = interaction2.calculate_cost(blackbox_pricing)
