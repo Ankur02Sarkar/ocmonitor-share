@@ -401,5 +401,37 @@
     "cacheRead": 0.0,
     "contextWindow": 400000,
     "sessionQuota": 0.0
+  },
+  "blackboxai/moonshotai/kimi-k2.6": {
+    "input": 0.95,
+    "output": 4.0,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.16,
+    "contextWindow": 262144,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/minimax/minimax-m2.7": {
+    "input": 0.3,
+    "output": 1.2,
+    "cacheWrite": 0.375,
+    "cacheRead": 0.06,
+    "contextWindow": 204800,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/nvidia/nemotron-3-ultra": {
+    "input": 0.5,
+    "output": 2.5,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.15,
+    "contextWindow": 262144,
+    "sessionQuota": 0.0
+  },
+  "blackboxai/deepseek/deepseek-v4-pro": {
+    "input": 1.74,
+    "output": 3.48,
+    "cacheWrite": 0.0,
+    "cacheRead": 0.15,
+    "contextWindow": 1000000,
+    "sessionQuota": 0.0
   }
 }
