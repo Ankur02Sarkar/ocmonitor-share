@@ -250,7 +250,7 @@ class TestCalculateCost:
                 contextWindow=1000000,
                 sessionQuota=Decimal("0"),
             ),
-            "blackboxai/anthropic/claude-opus-4.6": ModelPricing(
+            "blackboxai/anthropic/claude-opus-4.8": ModelPricing(
                 input=Decimal("5.0"),
                 output=Decimal("25.0"),
                 cacheWrite=Decimal("0"),
